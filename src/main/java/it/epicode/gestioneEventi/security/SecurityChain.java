@@ -27,28 +27,16 @@ public class SecurityChain {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(AbstractHttpConfigurer::disable); //disabilita csrf
-        httpSecurity.cors(AbstractHttpConfigurer::disable); // disabilita cors
-
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        httpSecurity.cors(AbstractHttpConfigurer::disable);
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/auth")
-                .permitAll());
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/utenti/**")
-                .hasAuthority(Ruolo.ORGANIZZATORE.name()));
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/**")
-                .denyAll());
+        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll());
+        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/evento/**").hasAuthority(Ruolo.ORGANIZZATORE.name()));
+
         return httpSecurity.build();
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration cors = new CorsConfiguration();
-        cors.addAllowedOrigin("http://www.example.com");
-        cors.addAllowedMethod(HttpMethod.GET);
-        UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
-        configurationSource.registerCorsConfiguration("*/**", cors);
-        return configurationSource;
-    }
+
 
 }

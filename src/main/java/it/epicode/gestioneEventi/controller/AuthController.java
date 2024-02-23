@@ -33,13 +33,13 @@ public class AuthController {
     private PasswordEncoder encode;
 
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public Utente register(@RequestBody @Validated UtenteRequest utenteRequest, BindingResult bindingResult) {
         HandlerException.badRequestException(bindingResult);
         return utenteService.save(utenteRequest);
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public String login(@RequestBody @Validated LoginRequest loginRequest, BindingResult bindingResult)  {
         HandlerException.badRequestException(bindingResult);
         Utente utente = utenteService.getUtenteByUsername(loginRequest.getUsername());

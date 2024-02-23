@@ -29,7 +29,7 @@ public class EventoService {
         return eventoRepository.findByLuogo(luogo)
                 .orElseThrow(()-> new BadRequestException("Evento non trovato"));
     }
-    public List<Evento> getEventoByDate (LocalDate data){
+    public List<Evento> getEventiByDate (LocalDate data){
         return eventoRepository.findByDataEvento(data)
                 .orElseThrow(()-> new BadRequestException("Nessun evento in questa data"));
     }
