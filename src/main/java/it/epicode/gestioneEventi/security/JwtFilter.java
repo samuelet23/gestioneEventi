@@ -22,6 +22,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTools jwtTools;
 
+    @Autowired
     private UtenteService userService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

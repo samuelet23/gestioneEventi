@@ -37,6 +37,7 @@ public class SecurityChain {
                 .hasAuthority(Ruolo.UTENTE.name()));
         httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/evento/**")
                 .hasAuthority(Ruolo.ORGANIZZATORE.name()));
+        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/**").denyAll());
 
 
 
