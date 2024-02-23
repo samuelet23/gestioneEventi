@@ -31,8 +31,14 @@ public class SecurityChain {
         httpSecurity.cors(AbstractHttpConfigurer::disable);
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll());
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/evento/**").hasAuthority(Ruolo.ORGANIZZATORE.name()));
+        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/auth/**")
+                .permitAll());
+        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/utente/**")
+                .hasAuthority(Ruolo.UTENTE.name()));
+        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/evento/**")
+                .hasAuthority(Ruolo.ORGANIZZATORE.name()));
+
+
 
         return httpSecurity.build();
     }
