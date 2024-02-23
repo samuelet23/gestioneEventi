@@ -28,18 +28,19 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorization =  request.getHeader("Authorization");
 
         if (authorization == null || !authorization.startsWith("Bearer")) {
-            try {
-                throw new UnAuthorizedException("Token non presente");
-            } catch (UnAuthorizedException e) {
-                throw new RuntimeException(e);
-            }
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
-        String token= authorization.substring(7);// parte da 7 perchè il token parte dopo il Bearer
+
+        String token= authorization.substring(7);
+
         try {
             jwtTools.validaToken(token);
         } catch (UnAuthorizedException e) {
-            throw new RuntimeException(e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
+
         String username  = jwtTools.estraiUsernameDalToken(token);
 
         Utente utente = userService.getUtenteByUsername(username);
