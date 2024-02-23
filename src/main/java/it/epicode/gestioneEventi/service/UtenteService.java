@@ -32,11 +32,12 @@ public class UtenteService {
     @Autowired
     private PasswordEncoder encoder;
 
-    private final Logger logger = (Logger) LoggerFactory.getLogger(UtenteService.class);
 
 
 
-
+public List<Utente> getAll(){
+    return utenteRepository.findAll();
+}
     public Utente getUtenteByUsername(String username){
         return utenteRepository.findByUsername(username);
     }
@@ -55,7 +56,7 @@ public class UtenteService {
 
         return utenteRepository.save(utente);
     }
-    public void prenotaPosto(String titolo, String username){
+    public Evento prenotaPosto(String titolo, String username){
         Evento evento = eventoRepository.findByTitolo(titolo)
                 .orElseThrow(()-> new BadRequestException("l'evento:"+ titolo+" non esiste"));
         int postiDisponibili = evento.getNumeroPostiDisponibili();
@@ -67,7 +68,8 @@ public class UtenteService {
             }
             evento.setNumeroPostiDisponibili(postiDisponibili - 1);
             evento.setPartecipanti(Set.of(utente));
-            logger.info("Hai prenotato un posto per l'evento: "+evento.getTitolo()+" in data: "+ evento.getDataEvento());
+            System.out.println("Hai prenotato un posto per l'evento: "+evento.getTitolo()+" in data: "+ evento.getDataEvento());
+            return evento;
         }else {
             evento.setDisponibile(false);
             throw new BadRequestException("l'evento "+evento.getTitolo()+"è SOLD OUT"  );

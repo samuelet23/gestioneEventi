@@ -2,35 +2,34 @@ package it.epicode.gestioneEventi.controller;
 
 import it.epicode.gestioneEventi.model.Evento;
 import it.epicode.gestioneEventi.model.Ruolo;
+import it.epicode.gestioneEventi.model.Utente;
 import it.epicode.gestioneEventi.service.UtenteService;
 import jakarta.persistence.*;
+import jakarta.websocket.server.PathParam;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/utente")
 public class UtenteController  {
-
-    private String nome;
-    private String cognome;
-    @Column(unique = true)
-    private String username;
-    private String email;
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    private Ruolo ruolo;
-
-    @ManyToMany()
-    @JoinTable(
-            name = "partecipanti_eventi",
-            joinColumns = @JoinColumn(name = "partecipanti_id"),
-            inverseJoinColumns = @JoinColumn(name = "eventiPrenotati_id")
-    )
-    private List<Evento> eventiPrenotati;
     @Autowired
     private UtenteService utenteService;
+
+    @GetMapping("")
+    public List<Utente> getAll(){
+        return utenteService.getAll();
+    }
+    @GetMapping("/{username}")
+    public Utente getByUsername(String username){
+        return utenteService.getUtenteByUsername(username);
+    }
+    @PostMapping("/prenota/titoloEvento/username")
+    public Evento prenotaPosto(@RequestParam String titoloEvento, @RequestParam String username){
+        return utenteService.prenotaPosto(titoloEvento, username);
+    }
+
 }
