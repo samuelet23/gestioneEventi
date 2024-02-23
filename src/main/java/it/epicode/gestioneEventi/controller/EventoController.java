@@ -8,6 +8,7 @@ import it.epicode.gestioneEventi.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -46,13 +47,13 @@ public class EventoController {
         return eventoService.getEventoByTitolo(titolo);
     }
     @PostMapping("")
-    public Evento creaEvento(@RequestBody EventoRequest eventoRequest, BindingResult bindingResult){
+    public Evento creaEvento(@RequestBody @Validated EventoRequest eventoRequest, BindingResult bindingResult){
         HandlerException.badRequestException(bindingResult);
         return eventoService.creaEvento(eventoRequest);
     }
 
     @PutMapping("/{id}")
-    public Evento modifica(@PathVariable long id,@RequestBody EventoRequest eventoRequest, BindingResult bindingResult){
+    public Evento modifica(@PathVariable long id, @RequestBody @Validated EventoRequest eventoRequest, BindingResult bindingResult){
         HandlerException.badRequestException(bindingResult);
         return eventoService.modificaEvento(id, eventoRequest);
     }
