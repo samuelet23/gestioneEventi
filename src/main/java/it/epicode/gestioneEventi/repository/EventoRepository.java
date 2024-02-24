@@ -15,7 +15,6 @@ import java.util.Optional;
 public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     Optional<Evento> findByTitolo(String titolo);
-    Optional<List<Evento>> findByDataEvento(LocalDate dataEvento);
     Optional<Evento> findByLuogo(String luogo);
 
     @Query("SELECT e.numeroPostiDisponibili FROM Evento e WHERE e.titolo = :titolo")
