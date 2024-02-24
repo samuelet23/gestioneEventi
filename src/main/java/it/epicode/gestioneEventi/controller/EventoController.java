@@ -18,11 +18,10 @@ import java.util.List;
 @RequestMapping("/evento")
 public class EventoController {
 
-
     @Autowired
     private EventoService eventoService;
 
-    @GetMapping("")
+    @GetMapping("/all")
     @PreAuthorize("hasAuthority('UTENTE')")
     public List<Evento> getAll(){
         return eventoService.getAllEventi();
@@ -51,7 +50,6 @@ public class EventoController {
         HandlerException.badRequestException(bindingResult);
         return eventoService.creaEvento(eventoRequest);
     }
-
     @PutMapping("/{id}")
     public Evento modifica(@PathVariable long id, @RequestBody @Validated EventoRequest eventoRequest, BindingResult bindingResult){
         HandlerException.badRequestException(bindingResult);
