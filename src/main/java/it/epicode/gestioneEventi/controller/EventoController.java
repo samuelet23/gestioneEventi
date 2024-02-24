@@ -18,7 +18,6 @@ import java.util.List;
 @RequestMapping("/evento")
 public class EventoController {
 
-
     @Autowired
     private EventoService eventoService;
 
@@ -27,47 +26,41 @@ public class EventoController {
     public List<Evento> getAll(){
         return eventoService.getAllEventi();
     }
-    @GetMapping("/{id}")
-    public Evento getEventoById(@PathVariable long id){
+
+    @GetMapping("/id")
+    public Evento getEventoById(@RequestParam long id){
         return eventoService.getEventoById(id);
     }
-    @GetMapping("/{luogo}")
-    @PreAuthorize("hasAuthority('UTENTE')")
-    public Evento getEventoByLuogo (@PathVariable String luogo){
+    @GetMapping("/luogo")
+    public Evento getEventoByLuogo (@RequestParam String luogo){
         return eventoService.getEventoByLuogo(luogo);
     }
-    @GetMapping("/{data}")
-    @PreAuthorize("hasAuthority('UTENTE')")
-    public List<Evento> getEventiByDate (@PathVariable LocalDate data){
-        return eventoService.getEventiByDate(data);
-    }
-    @GetMapping("/{titolo}")
-    @PreAuthorize("hasAuthority('UTENTE')")
-    public Evento getEventoByTitolo (@PathVariable String titolo){
+    @GetMapping("/titolo")
+    public Evento getEventoByTitolo (@RequestParam String titolo){
         return eventoService.getEventoByTitolo(titolo);
     }
-    @PostMapping("")
-    public Evento creaEvento(@RequestBody @Validated EventoRequest eventoRequest, BindingResult bindingResult){
-        HandlerException.badRequestException(bindingResult);
+
+    @DeleteMapping("/id")
+    public void elimina(@RequestParam long id){
+        eventoService.eliminaEvento(id);
+    }
+    @PostMapping("/evento/crea")
+    public Evento creaEvento(@RequestBody  EventoRequest eventoRequest){
         return eventoService.creaEvento(eventoRequest);
     }
-
-    @PutMapping("/{id}")
-    public Evento modifica(@PathVariable long id, @RequestBody @Validated EventoRequest eventoRequest, BindingResult bindingResult){
+    @PutMapping("/id")
+    public Evento modifica(@RequestParam long id, @RequestBody @Validated EventoRequest eventoRequest, BindingResult bindingResult){
         HandlerException.badRequestException(bindingResult);
         return eventoService.modificaEvento(id, eventoRequest);
     }
-    @PatchMapping("/{titolo}/disponibile")
-    public Evento setDisponibile(@PathVariable String titolo){
+    @PatchMapping("/titolo/disponibile")
+    public Evento setDisponibile(@RequestParam String titolo){
         return eventoService.setEventoDisponibile(titolo);
     }
-    @PatchMapping("/{titolo}/nonDisponibile")
-    public Evento setNonDisponibile(@PathVariable String titolo){
+    @PatchMapping("/titolo/nonDisponibile")
+    public Evento setNonDisponibile(@RequestParam String titolo){
         return eventoService.setEventoNonDisponibile(titolo);
     }
 
-    @DeleteMapping("/{id}")
-    public void elimina(@PathVariable long id){
-        eventoService.eliminaEvento(id);
-    }
+
 }
