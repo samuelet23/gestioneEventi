@@ -38,12 +38,15 @@ public class UtenteService {
 public List<Utente> getAll(){
     return utenteRepository.findAll();
 }
-    public Utente getUtenteByUsername(String username){
-        return utenteRepository.findByUsername(username);
+public Utente getUtenteByUsername(String username){
+    return utenteRepository.findByUsername(username)
+            .orElseThrow(()-> new BadRequestException("Utente non trovato"));
     }
-    public Utente getUtenteByNome(String nome){
-        return utenteRepository.findByUsername(nome);
+public Utente getUtenteById(long id ){
+        return utenteRepository.findById(id)
+                .orElseThrow(()-> new BadRequestException("Utente non trovato"));
     }
+
 
     public Utente save(UtenteRequest utenteRequest){
         Utente utente = new Utente();
